@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f6f2">
+    <title>TradeOS — Business workspace</title>
+    <link rel="stylesheet" href="/static/app.css">
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <main id="loginView" class="login-view">
+      <div class="login-card">
+        <a class="brand brand-login" href="/" aria-label="TradeOS home">
+          <span class="brand-mark">T</span>
+          <span>TradeOS</span>
+        </a>
+        <div class="eyebrow">YOUR BUSINESS, IN SYNC</div>
+        <h1>A clearer view<br>of your business.</h1>
+        <p>Keep your products, prices, and team workspace together in one place.</p>
+        <div id="accountAuth">
+          <div class="auth-tabs" role="tablist" aria-label="Account access">
+            <button type="button" class="auth-tab active" data-auth-tab="login">Sign in</button>
+            <button type="button" class="auth-tab" data-auth-tab="register">Create account</button>
+          </div>
+          <form id="loginForm" class="auth-form">
+            <label class="field-label" for="loginEmail">Email</label>
+            <input id="loginEmail" name="email" type="email" autocomplete="email" maxlength="254" required>
+            <label class="field-label" for="loginPassword">Password</label>
+            <input id="loginPassword" name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" required>
+            <button class="button button-primary button-wide" type="submit">Sign in <span>→</span></button>
+            <button type="button" class="auth-link" data-action="forgot-password">Forgot password?</button>
+            <button type="button" class="auth-link" data-action="resend-verification">Resend verification email</button>
+          </form>
+          <form id="registerForm" class="auth-form" hidden>
+            <label class="field-label" for="registerEmail">Email</label>
+            <input id="registerEmail" name="email" type="email" autocomplete="email" maxlength="254" required>
+            <label class="field-label" for="registerPassword">Password</label>
+            <input id="registerPassword" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required>
+            <span class="field-hint">Use at least 12 characters. Passwords are never stored as plain text.</span>
+            <button class="button button-primary button-wide" type="submit">Create account <span>→</span></button>
+          </form>
+        </div>
+        <button class="button button-outline button-wide dev-login-button" data-action="dev-login" hidden>Continue with development access</button>
+        <div class="login-note"><span class="status-dot"></span><span id="loginNote">Secure account access</span></div>
+      </div>
+      <div class="login-art" aria-hidden="true">
+        <div class="art-orbit orbit-one"></div>
+        <div class="art-orbit orbit-two"></div>
+        <div class="art-card art-card-main">
+          <span class="art-label">PRODUCTS THIS MONTH</span>
+          <strong>Everything<br>in its place.</strong>
+          <div class="art-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="art-card art-card-note"><span class="art-check">✓</span><span>Workspace ready</span></div>
+        <div class="art-spark">✳</div>
+      </div>
+    </main>
+
+    <div id="appView" class="app-shell" hidden>
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="TradeOS home">
+          <span class="brand-mark">T</span>
+          <span>TradeOS</span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <div class="workspace-switcher">
+          <select id="workspaceSelect" class="workspace-picker" aria-label="Select workspace">
+            <option value="">No workspace selected</option>
+          </select>
+          <button class="workspace-add" data-action="create-workspace" aria-label="Create workspace" title="Create workspace">+</button>
+        </div>
+        <div id="workspaceRole" class="workspace-role">No workspace selected</div>
+        <div class="nav-label">MENU</div>
+        <nav class="main-nav" aria-label="Main navigation">
+          <button class="nav-item active" data-view="dashboard"><span class="nav-icon">⌂</span>Overview</button>
+          <button class="nav-item" data-view="products"><span class="nav-icon">▦</span>Products<span id="productNavCount" class="nav-count"></span></button>
+          <button class="nav-item" data-view="customers"><span class="nav-icon">♙</span>Customers<span id="customerNavCount" class="nav-count"></span></button>
+          <button class="nav-item" data-view="sales"><span class="nav-icon">↗</span>Sales<span id="salesNavCount" class="nav-count"></span></button>
+          <button class="nav-item" data-view="copilot"><span class="nav-icon">✳</span>Copilot<span class="copilot-nav-badge">AI</span></button>
+          <button class="nav-item" data-view="activity"><span class="nav-icon">↗</span>Activity</button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="sidebar-tip">
+            <div class="tip-icon">✦</div>
+            <strong>Keep things moving</strong>
+            <span>Add products to see your inventory at a glance.</span>
+            <button data-action="add-product">Add a product <span>→</span></button>
+          </div>
+          <div class="account-row">
+            <div class="avatar" id="userAvatar">T</div>
+            <div class="account-copy"><strong>Development account</strong><small id="userShortId"></small></div>
+            <button class="icon-button logout-button" data-action="sign-out" aria-label="Sign out" title="Sign out">↪</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="topbar">
+          <button class="mobile-menu icon-button" data-action="toggle-menu" aria-label="Toggle navigation">☰</button>
+          <div class="breadcrumbs"><span>Workspace</span><b>/</b><strong id="breadcrumbTitle">Overview</strong></div>
+          <div class="topbar-actions">
+            <span class="live-status"><i></i>All changes saved</span>
+            <button class="button button-primary button-small" data-action="add-product"><span>+</span> Add product</button>
+          </div>
+        </header>
+
+        <section class="page-content">
+          <section class="page-pane active" data-pane="dashboard">
+            <div class="page-heading">
+              <div><div class="eyebrow" id="todayLabel">YOUR BUSINESS AT A GLANCE</div><h1>Overview<span class="heading-period">.</span></h1><p>Here’s what’s happening with your business.</p></div>
+              <button class="button button-outline" data-action="create-workspace"><span>＋</span> New workspace</button>
+            </div>
+            <div id="emptyWorkspace" class="empty-state" hidden>
+              <div class="empty-illustration"><span>W</span><i>＋</i></div>
+              <div class="eyebrow">A FRESH START</div>
+              <h2>Create your first workspace</h2>
+              <p>Workspaces keep each business and its products neatly organized.</p>
+              <button class="button button-primary" data-action="create-workspace">Create a workspace <span>→</span></button>
+            </div>
+            <div id="dashboardContent">
+              <div class="metric-grid">
+                <article class="metric-card">
+                  <div class="metric-top"><span>Total products</span><span class="metric-icon purple">▦</span></div>
+                  <div class="metric-value" id="metricProducts">0</div>
+                  <div class="metric-foot"><span class="metric-indicator">●</span> In your catalog</div>
+                </article>
+                <article class="metric-card">
+                  <div class="metric-top"><span>Units in stock</span><span class="metric-icon mint">◈</span></div>
+                  <div class="metric-value" id="metricStock">0</div>
+                  <div class="metric-foot">Across all listed products</div>
+                </article>
+                <article class="metric-card">
+                  <div class="metric-top"><span>Recent sales</span><span class="metric-icon peach">↗</span></div>
+                  <div class="metric-value" id="metricSales">$0.00</div>
+                  <div class="metric-foot">Total from latest 200 sales</div>
+                </article>
+              </div>
+              <div class="content-grid">
+                <section class="panel recent-panel">
+                  <div class="panel-heading"><div><h2>Recently added</h2><p>Your latest products</p></div><button class="text-button" data-view="products">View inventory <span>→</span></button></div>
+                  <div id="recentProducts" class="recent-list"></div>
+                </section>
+                <section class="panel quick-panel">
+                  <div class="panel-heading"><div><h2>Quick actions</h2><p>Keep your business up to date</p></div></div>
+                  <button class="quick-action" data-action="add-product"><span class="quick-icon purple">＋</span><span><strong>Add a product</strong><small>Update your inventory catalog</small></span><b>→</b></button>
+                  <button class="quick-action" data-action="record-sale"><span class="quick-icon peach">↗</span><span><strong>Record a sale</strong><small>Update stock and sales history</small></span><b>→</b></button>
+                  <button class="quick-action" data-action="add-customer"><span class="quick-icon mint">♙</span><span><strong>Add a customer</strong><small>Save customer contact details</small></span><b>→</b></button>
+                  <button class="quick-action" data-action="create-workspace"><span class="quick-icon mint">▣</span><span><strong>Create a workspace</strong><small>Set up another business</small></span><b>→</b></button>
+                  <div class="quick-foot"><span>✦</span> Your data is isolated by workspace.</div>
+                </section>
+              </div>
+            </div>
+          </section>
+
+          <section class="page-pane" data-pane="products">
+            <div class="page-heading">
+              <div><div class="eyebrow">YOUR CATALOG</div><h1>Products<span class="heading-period">.</span></h1><p>Keep your product details and pricing up to date.</p></div>
+              <button class="button button-primary" data-action="add-product"><span>＋</span> Add product</button>
+            </div>
+            <section class="panel inventory-panel">
+              <div class="inventory-toolbar">
+                <div><h2>All products <span id="inventoryCount" class="count-pill">0</span></h2><p>Manage the items in your catalog</p></div>
+                <label class="search-box"><span>⌕</span><input id="productSearch" type="search" placeholder="Search products..." autocomplete="off"></label>
+              </div>
+              <div id="noWorkspaceProducts" class="table-empty" hidden><span>▦</span><strong>No products yet</strong><p>Add your first product to start building your catalog.</p><button class="button button-outline" data-action="add-product">Add a product</button></div>
+              <div id="noSearchResults" class="table-empty" hidden><strong>No matching products</strong><p>Try a different search term.</p></div>
+              <div class="table-scroll">
+                <table>
+                  <thead><tr><th>PRODUCT</th><th>UNIT</th><th>IN STOCK</th><th>SELLING PRICE</th><th>COST</th><th>GROSS MARGIN</th><th></th></tr></thead>
+                  <tbody id="productRows"></tbody>
+                </table>
+              </div>
+              <div class="table-footer"><span id="tableSummary">Showing 0 products</span><span>Prices shown in <b id="tableCurrency">JMD</b></span></div>
+            </section>
+          </section>
+
+          <section class="page-pane" data-pane="customers">
+            <div class="page-heading">
+              <div><div class="eyebrow">CUSTOMER DIRECTORY</div><h1>Customers<span class="heading-period">.</span></h1><p>Keep useful contact details close at hand.</p></div>
+              <button class="button button-primary" data-action="add-customer"><span>＋</span> Add customer</button>
+            </div>
+            <section class="panel inventory-panel">
+              <div class="inventory-toolbar"><div><h2>All customers <span id="customerCount" class="count-pill">0</span></h2><p>Customers are only visible inside this workspace</p></div><label class="search-box"><span>⌕</span><input id="customerSearch" type="search" placeholder="Search customers..." autocomplete="off"></label></div>
+              <div id="noCustomers" class="table-empty" hidden><span>♙</span><strong>No customers yet</strong><p>Add a customer to associate them with sales.</p><button class="button button-outline" data-action="add-customer">Add a customer</button></div>
+              <div id="noCustomerResults" class="table-empty" hidden><strong>No matching customers</strong><p>Try a different search term.</p></div>
+              <div class="table-scroll"><table><thead><tr><th>NAME</th><th>EMAIL</th><th>PHONE</th><th></th></tr></thead><tbody id="customerRows"></tbody></table></div>
+              <div class="table-footer"><span id="customerSummary">Showing 0 customers</span><span>Workspace directory</span></div>
+            </section>
+          </section>
+
+          <section class="page-pane" data-pane="sales">
+            <div class="page-heading">
+              <div><div class="eyebrow">SALES &amp; ORDERS</div><h1>Sales<span class="heading-period">.</span></h1><p>Record sales and keep inventory quantities accurate.</p></div>
+              <button class="button button-primary" data-action="record-sale"><span>＋</span> Record sale</button>
+            </div>
+            <section class="panel inventory-panel">
+              <div class="inventory-toolbar"><div><h2>Sales history <span id="salesCount" class="count-pill">0</span></h2><p>Completed sales · product prices are saved at time of sale</p></div></div>
+              <div id="noSales" class="table-empty" hidden><span>↗</span><strong>No sales recorded</strong><p>Record a sale to update stock and start your sales history.</p><button class="button button-outline" data-action="record-sale">Record a sale</button></div>
+              <div class="table-scroll"><table><thead><tr><th>SALE</th><th>DATE</th><th>CUSTOMER</th><th>ITEMS</th><th>TOTAL</th></tr></thead><tbody id="salesRows"></tbody></table></div>
+              <div class="table-footer"><span id="salesSummary">Showing 0 sales</span><span>Most recent first</span></div>
+            </section>
+          </section>
+
+          <section class="page-pane" data-pane="copilot">
+            <div class="page-heading">
+              <div><div class="eyebrow">YOUR BUSINESS ASSISTANT</div><h1>Copilot<span class="heading-period">.</span></h1><p>Ask questions or describe a task. You approve every change.</p></div>
+            </div>
+            <section class="panel copilot-panel">
+              <div class="copilot-header">
+                <span class="copilot-mark">✳</span>
+                <span><strong>TradeOS Copilot</strong><small id="copilotStatus">Checking AI connection...</small></span>
+                <span class="copilot-approval"><span>✓</span> Approval required</span>
+              </div>
+              <div id="copilotUnavailable" class="copilot-unavailable" hidden>
+                <strong>Copilot needs an AI provider key</strong>
+                <p>Add <code>COPILOT_API_KEY</code> to the server environment and restart the app. Your key stays on the server and is never sent to the browser.</p>
+              </div>
+              <div class="copilot-privacy"><span>🔒</span><span>Your prompt and workspace name, product/customer names and record IDs, product prices/stock, and aggregate sales data are sent to the configured AI provider. Stored customer contact details and credentials are not included. Copilot cannot make changes until you confirm a preview.</span></div>
+              <div id="copilotMessages" class="copilot-messages" aria-live="polite">
+                <div class="copilot-message assistant"><span class="message-avatar">✳</span><div class="message-bubble"><strong>Hi! I can help with your workspace.</strong><p>Try “Add 12 bags of coffee at $8.50, cost $4” or “How many units are low in stock?” I’ll show a preview before any change.</p></div></div>
+              </div>
+              <form id="copilotForm" class="copilot-composer">
+                <textarea id="copilotInput" rows="2" maxlength="4000" placeholder="Tell Copilot what you need..." required></textarea>
+                <div class="composer-footer"><span>Enter to send · Shift+Enter for a new line</span><button class="button button-primary" type="submit" id="copilotSend">Send <span>↑</span></button></div>
+              </form>
+            </section>
+          </section>
+
+          <section class="page-pane" data-pane="activity">
+            <div class="page-heading"><div><div class="eyebrow">WORKSPACE HISTORY</div><h1>Activity<span class="heading-period">.</span></h1><p>A record of the changes made in this workspace.</p></div></div>
+            <section class="panel activity-panel">
+              <div class="panel-heading"><div><h2>Recent activity</h2><p>The latest workspace events</p></div><span class="secure-label"><span>●</span> Append-only log</span></div>
+              <div id="activityRows" class="activity-list"></div>
+              <div id="emptyActivity" class="table-empty" hidden><span>↗</span><strong>No activity yet</strong><p>Workspace changes will appear here.</p></div>
+            </section>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="workspaceDialog" class="form-dialog">
+      <form id="workspaceForm">
+        <div class="dialog-top"><div><div class="eyebrow">WORKSPACE SETUP</div><h2>Create a workspace</h2></div><button class="icon-button" type="button" data-action="close-workspace" aria-label="Close">×</button></div>
+        <p class="dialog-description">Give this business a name and a base currency.</p>
+        <label class="field-label" for="workspaceInputName">Business name</label>
+        <input id="workspaceInputName" name="name" type="text" maxlength="200" placeholder="e.g. Kingston Supply Co." required>
+        <label class="field-label" for="workspaceInputCurrency">Base currency</label>
+        <input id="workspaceInputCurrency" name="base_currency" type="text" minlength="3" maxlength="3" pattern="[A-Z]{3}" value="JMD" required>
+        <span class="field-hint">Use a 3-letter currency code, such as JMD or USD.</span>
+        <div class="dialog-actions"><button class="button button-outline" type="button" data-action="close-workspace">Cancel</button><button class="button button-primary" type="submit">Create workspace <span>→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog id="productDialog" class="form-dialog">
+      <form id="productForm">
+        <div class="dialog-top"><div><div class="eyebrow">PRODUCT CATALOG</div><h2 id="productDialogTitle">Add a product</h2></div><button class="icon-button" type="button" data-action="close-product" aria-label="Close">×</button></div>
+        <p class="dialog-description">Add the product details and pricing for your catalog.</p>
+        <label class="field-label" for="productName">Product name</label>
+        <input id="productName" name="name" type="text" maxlength="200" placeholder="e.g. Organic coffee beans" required>
+        <label class="field-label" for="productUnit">Unit</label>
+        <input id="productUnit" name="unit" type="text" maxlength="30" value="pcs" required>
+        <div class="field-columns">
+          <div><label class="field-label" for="productPrice">Selling price <span id="priceCurrency">(JMD)</span></label><input id="productPrice" name="price" type="number" min="0" max="10000000000" step="0.01" placeholder="0.00" required></div>
+          <div><label class="field-label" for="productCost">Unit cost <span id="costCurrency">(JMD)</span></label><input id="productCost" name="cost" type="number" min="0" max="10000000000" step="0.01" placeholder="0.00" required></div>
+        </div>
+          <label class="field-label" for="productStock">Quantity in stock</label>
+          <input id="productStock" name="stock_quantity" type="number" min="0" max="2147483647" step="1" value="0" required>
+          <div class="dialog-actions"><button class="button button-outline" type="button" data-action="close-product">Cancel</button><button class="button button-primary" type="submit" id="productSubmit">Save product <span>→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog id="customerDialog" class="form-dialog">
+      <form id="customerForm">
+          <div class="dialog-top"><div><div class="eyebrow">CUSTOMER DIRECTORY</div><h2 id="customerDialogTitle">Add a customer</h2></div><button class="icon-button" type="button" data-action="close-customer" aria-label="Close">×</button></div>
+          <p class="dialog-description">Save a name and optional contact information.</p>
+          <label class="field-label" for="customerName">Customer name</label><input id="customerName" name="name" type="text" maxlength="200" required>
+          <label class="field-label" for="customerEmail">Email <span>(optional)</span></label><input id="customerEmail" name="email" type="email" maxlength="254">
+          <label class="field-label" for="customerPhone">Phone <span>(optional)</span></label><input id="customerPhone" name="phone" type="tel" maxlength="40">
+          <div class="dialog-actions"><button class="button button-outline" type="button" data-action="close-customer">Cancel</button><button class="button button-primary" type="submit" id="customerSubmit">Save customer <span>→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog id="saleDialog" class="form-dialog sale-dialog">
+      <form id="saleForm">
+          <div class="dialog-top"><div><div class="eyebrow">SALES &amp; ORDERS</div><h2>Record a sale</h2></div><button class="icon-button" type="button" data-action="close-sale" aria-label="Close">×</button></div>
+          <p class="dialog-description">Choose available products. Stock is deducted only after the sale is saved.</p>
+          <label class="field-label" for="saleCustomer">Customer <span>(optional)</span></label><select id="saleCustomer" name="customer_id"><option value="">Walk-in customer</option></select>
+          <div class="sale-lines-heading"><span class="field-label">Products</span><button class="text-button" type="button" data-action="add-sale-line">＋ Add another product</button></div>
+          <div id="saleLines"></div>
+          <div class="sale-total"><span>Total</span><strong id="saleTotal">$0.00</strong></div>
+          <div class="dialog-actions"><button class="button button-outline" type="button" data-action="close-sale">Cancel</button><button class="button button-primary" type="submit" id="saleSubmit">Save sale <span>→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog id="resetRequestDialog" class="form-dialog">
+      <form id="resetRequestForm">
+        <div class="dialog-top"><div><div class="eyebrow">ACCOUNT RECOVERY</div><h2>Reset your password</h2></div><button class="icon-button" type="button" data-action="close-reset-request" aria-label="Close">×</button></div>
+        <p class="dialog-description">Enter your account email. If it exists, we’ll send a secure reset link.</p>
+        <label class="field-label" for="resetEmail">Email</label><input id="resetEmail" name="email" type="email" autocomplete="email" maxlength="254" required>
+        <div class="dialog-actions"><button class="button button-outline" type="button" data-action="close-reset-request">Cancel</button><button class="button button-primary" type="submit">Send reset link <span>→</span></button></div>
+      </form>
+    </dialog>
+
+    <dialog id="resetConfirmDialog" class="form-dialog">
+      <form id="resetConfirmForm">
+        <input id="resetToken" name="token" type="hidden">
+        <div class="dialog-top"><div><div class="eyebrow">ACCOUNT RECOVERY</div><h2>Choose a new password</h2></div><button class="icon-button" type="button" data-action="close-reset-confirm" aria-label="Close">×</button></div>
+        <p class="dialog-description">Choose a new password of at least 12 characters.</p>
+        <label class="field-label" for="resetNewPassword">New password</label><input id="resetNewPassword" name="password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required>
+        <label class="field-label" for="resetConfirmPassword">Confirm password</label><input id="resetConfirmPassword" name="confirm_password" type="password" autocomplete="new-password" minlength="12" maxlength="128" required>
+        <div class="dialog-actions"><button class="button button-outline" type="button" data-action="close-reset-confirm">Cancel</button><button class="button button-primary" type="submit">Update password <span>→</span></button></div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
