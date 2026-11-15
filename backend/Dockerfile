@@ -5,14 +5,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY backend/requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt \
     && addgroup --system tradeos \
     && adduser --system --ingroup tradeos tradeos
 
-COPY app ./app
-COPY migrations ./migrations
-COPY scripts ./scripts
+COPY backend/app ./app
+COPY backend/migrations ./migrations
+COPY backend/scripts ./scripts
 
 USER tradeos
 EXPOSE 8000

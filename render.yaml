@@ -5,8 +5,8 @@ services:
     plan: starter
     region: oregon
     dockerfilePath: ./backend/Dockerfile
-    dockerContext: ./backend
-    preDeployCommand: python scripts/setup_db.py
+    dockerContext: .
+    preDeployCommand: python backend/scripts/setup_db.py
     healthCheckPath: /health
     envVars:
       - key: ENVIRONMENT

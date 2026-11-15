@@ -29,9 +29,9 @@ The optional hosted Copilot is available from the workspace menu when `COPILOT_A
 Email/password accounts use Argon2id password hashes, 12-character minimum passwords, 30-minute bearer tokens, one-time email-verification links, and one-time password-reset links. Email delivery uses SMTP with STARTTLS. In production, set `PUBLIC_BASE_URL` to the HTTPS app URL and provide `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER` (if required), `SMTP_PASSWORD` (if required), and `SMTP_SENDER`. Account registration stays disabled until email delivery is configured. The local development sign-in is hidden and disabled outside `ENVIRONMENT=development`.
 
 ## Deploy to Render
-The root `render.yaml` provisions a Render web service and managed PostgreSQL database. The web service runs migrations in Render's pre-deploy step and serves the app after the database is ready.
+The root `render.yaml` provisions a Render web service and managed PostgreSQL database. The Docker build context is the repository root, and the Dockerfile copies the app from `backend/`; the service runs migrations in Render's pre-deploy step and serves the app after the database is ready.
 
-1. Push this repository to GitHub, then in Render choose **New → Blueprint** and select the repository.
+1. Push this repository to GitHub, then in Render choose **New → Blueprint** and select the repository. If configuring a web service manually, choose the **Docker** runtime, leave **Root Directory** blank, set **Dockerfile Path** to `backend/Dockerfile`, and use the repository root as the **Docker Context Directory**.
 2. Provide `PUBLIC_BASE_URL`, `SMTP_HOST`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_SENDER`, and `COPILOT_API_KEY` in Render's secret/environment prompt. Do not put credentials in the repository. Use your final HTTPS app URL for `PUBLIC_BASE_URL` and an SMTP provider that supports STARTTLS on port 587.
 3. If Render assigns a different service URL, update `PUBLIC_BASE_URL` to that exact HTTPS URL after the first deploy. Until SMTP and HTTPS are configured, account registration and reset are deliberately disabled.
 4. Verify `/health`, register a test account, receive and use the verification email, then create a workspace and test a sale. Keep the database private and configure backups/monitoring in Render.
